@@ -91,7 +91,7 @@ export function CalculatorContainer() {
     <div className="min-h-screen py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* 头部 */}
-        <div className="text-center mb-8" style={{ marginTop: '16px' }}>
+        <div className="text-center mb-8 mt-8">
           <div className="flex items-center justify-center mb-2">
             <CalculatorOutlined style={{ fontSize: '32px', color: '#1890ff', marginRight: '12px' }} />
             <h1 className="text-3xl font-bold" style={{ color: 'inherit' }}>退休财务自由计算器</h1>
@@ -146,7 +146,7 @@ export function CalculatorContainer() {
 
         {/* 底部说明 */}
         <div className="text-center" style={{ marginTop: '8px', fontSize: '12px', opacity: 0.5 }}>
-          <p style={{ margin: 0, whiteSpace: 'nowrap', color: 'inherit' }}计算结果仅供参考，实际投资收益可能因市场波动而有所不同，建议结合个人实际情况和专业理财建议制定投资计划划</p>
+          <p style={{ margin: 0, whiteSpace: 'nowrap', color: 'inherit' }}>计算结果仅供参考，实际投资收益可能因市场波动而有所不同，建议结合个人实际情况和专业理财建议制定投资计划</p>
         </div>
       </div>
     </div>
