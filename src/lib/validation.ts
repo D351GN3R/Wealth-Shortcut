@@ -8,15 +8,15 @@ export interface ValidationErrors {
 // 验证规则接口
 interface ValidationRule {
   field: keyof CalculationParams;
-  validate: (value: number, params: CalculationParams) => string | null;
+  validate: (value: number, params: CalculationParams, hasUserInput?: boolean) => string | null;
 }
 
 // 验证规则定义
 const VALIDATION_RULES: ValidationRule[] = [
   {
     field: 'currentAge',
-    validate: (value) => {
-      if (isNaN(value) || value === 0) {
+    validate: (value, params, hasUserInput) => {
+      if (isNaN(value) || (value === 0 && !hasUserInput)) {
         return 'EMPTY_FIELD';
       }
       if (value < 0 || value > 100) {
@@ -42,8 +42,8 @@ const VALIDATION_RULES: ValidationRule[] = [
   },
   {
     field: 'currentAnnualExpense',
-    validate: (value) => {
-      if (isNaN(value) || value === 0) {
+    validate: (value, params, hasUserInput) => {
+      if (isNaN(value) || (value === 0 && !hasUserInput)) {
         return 'EMPTY_FIELD';
       }
       if (value < 0) {
@@ -54,8 +54,8 @@ const VALIDATION_RULES: ValidationRule[] = [
   },
   {
     field: 'currentPassiveIncome',
-    validate: (value) => {
-      if (isNaN(value) || value === 0) {
+    validate: (value, params, hasUserInput) => {
+      if (isNaN(value) || (value === 0 && !hasUserInput)) {
         return 'EMPTY_FIELD';
       }
       if (value < 0) {
@@ -75,8 +75,8 @@ const VALIDATION_RULES: ValidationRule[] = [
   },
   {
     field: 'currentInvestmentAssets',
-    validate: (value) => {
-      if (isNaN(value) || value === 0) {
+    validate: (value, params, hasUserInput) => {
+      if (isNaN(value) || (value === 0 && !hasUserInput)) {
         return 'EMPTY_FIELD';
       }
       if (value < 0) {
@@ -96,8 +96,8 @@ const VALIDATION_RULES: ValidationRule[] = [
   },
   {
     field: 'investmentReturn',
-    validate: (value) => {
-      if (isNaN(value) || value === 0) {
+    validate: (value, params, hasUserInput) => {
+      if (isNaN(value) || (value === 0 && !hasUserInput)) {
         return 'EMPTY_FIELD';
       }
       if (value < 0 || value > 30) {
@@ -130,12 +130,13 @@ const VALIDATION_RULES: ValidationRule[] = [
 export function validateField(
   field: keyof CalculationParams,
   value: number,
-  params: CalculationParams
+  params: CalculationParams,
+  hasUserInput?: boolean
 ): string | null {
   const rule = VALIDATION_RULES.find(r => r.field === field);
   if (!rule) return null;
   
-  return rule.validate(value, params);
+  return rule.validate(value, params, hasUserInput);
 }
 
 // 验证所有字段

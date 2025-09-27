@@ -13,14 +13,19 @@ export function CalculatorContainer() {
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [result, setResult] = useState<CalculationResult | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
+  // 跟踪用户手动输入过的字段
+  const [userInputFields, setUserInputFields] = useState<Set<keyof CalculationParams>>(new Set());
 
   // 参数变更处理
   const handleParamChange = useCallback((field: keyof CalculationParams, value: number) => {
+    // 标记该字段为用户手动输入过
+    setUserInputFields(prev => new Set(prev).add(field));
+    
     setParams(prev => {
       const newParams = { ...prev, [field]: value };
       
-      // 实时验证当前字段
-      const fieldError = validateField(field, value, newParams);
+      // 实时验证当前字段，传入用户输入状态（该字段现在被认为是用户输入过的）
+      const fieldError = validateField(field, value, newParams, true);
       setErrors(prevErrors => ({
         ...prevErrors,
         [field]: fieldError
@@ -35,8 +40,13 @@ export function CalculatorContainer() {
     setIsCalculating(true);
     
     try {
-      // 验证所有字段
-      const allErrors = validateAllFields(params);
+      // 验证所有字段，传入用户输入状态
+      const allErrors: ValidationErrors = {};
+      Object.keys(params).forEach(key => {
+        const field = key as keyof CalculationParams;
+        const hasUserInput = userInputFields.has(field) || params[field] !== 0;
+        allErrors[field] = validateField(field, params[field], params, hasUserInput);
+      });
       setErrors(allErrors);
       
       // 如果有验证错误，不进行计算
@@ -56,13 +66,14 @@ export function CalculatorContainer() {
     } finally {
       setIsCalculating(false);
     }
-  }, [params]);
+  }, [params, userInputFields]);
 
   // 重置参数
   const handleReset = useCallback(() => {
     setParams(DEFAULT_PARAMS);
     setErrors({});
     setResult(null);
+    setUserInputFields(new Set());
   }, []);
 
 

@@ -167,7 +167,7 @@ export function InputPanel({ params, onChange, errors, onReset, onCalculate, isC
                 help={errors[item.key as keyof ValidationErrors] === 'EMPTY_FIELD' ? '' : errors[item.key as keyof ValidationErrors]}
               >
                 <InputNumber
-                  value={(['inflationRate', 'retirementExpenseRatio', 'withdrawalRate', 'expectedRetirementPassiveIncome'].includes(item.key) || item.value !== 0) ? item.value : undefined}
+                  value={isNaN(item.value) ? undefined : item.value}
                   onChange={(value) => onChange(item.key as keyof CalculationParams, value || 0)}
                   placeholder={item.placeholder}
                   min={item.min}
