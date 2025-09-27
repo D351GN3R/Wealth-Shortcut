@@ -3,7 +3,6 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "homepage": "https://d351gn3r.github.io/Wealth-Shortcut/",
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
