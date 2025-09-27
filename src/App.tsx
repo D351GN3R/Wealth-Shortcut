@@ -50,14 +50,20 @@ function App() {
         },
       }}
     >
-      <div className="App" style={{ minHeight: '100vh', backgroundColor: algorithm === theme.darkAlgorithm ? '#000000' : '#f5f5f5' }}>
+      <div className="App" style={{ 
+        minHeight: '100vh', 
+        backgroundColor: algorithm === theme.darkAlgorithm ? '#000000' : '#f5f5f5',
+        width: '100%',
+        maxWidth: '100%',
+        overflowX: 'hidden'
+      }}>
         {/* 主题切换器 */}
         <div style={{
           position: 'fixed',
           top: '20px',
           right: '20px',
           zIndex: 1000,
-        }}>
+        }} className="theme-switcher">
           <Segmented
             options={themeOptions}
             value={mode}

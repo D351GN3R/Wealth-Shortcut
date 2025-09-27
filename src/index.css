@@ -25,6 +25,83 @@
     background-color: #000000;
     color: #ffffff;
   }
+  
+  /* 移动端适配 - 小于600px */
+  @media (max-width: 599px) {
+    html, body {
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100%;
+    }
+    
+    body {
+      min-height: 100vh;
+      background-attachment: fixed;
+    }
+    
+    #root {
+      width: 100%;
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+    
+    /* 确保所有容器元素不超出屏幕宽度 */
+    * {
+      max-width: 100%;
+      box-sizing: border-box;
+    }
+    
+    /* Ant Design 组件移动端适配 */
+    .ant-card {
+      margin: 0 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    
+    .ant-row {
+      width: 100% !important;
+      max-width: 100% !important;
+      margin: 0 !important;
+    }
+    
+    .ant-col {
+      width: 100% !important;
+      max-width: 100% !important;
+      padding-left: 8px !important;
+      padding-right: 8px !important;
+    }
+    
+    /* 输入框组件适配 */
+    .ant-input-number {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    
+    /* 统计组件适配 */
+    .ant-statistic {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    
+    /* 描述列表适配 */
+    .ant-descriptions {
+      width: 100% !important;
+      max-width: 100% !important;
+      overflow-x: hidden !important;
+    }
+    
+    .ant-descriptions-item {
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+    
+    /* 主题切换器移动端适配 */
+    .theme-switcher {
+      top: 10px !important;
+      right: 10px !important;
+      transform: scale(0.9) !important;
+    }
+  }
 }
 
 /* 自定义滚动条样式 */

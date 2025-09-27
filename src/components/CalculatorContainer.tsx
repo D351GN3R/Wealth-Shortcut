@@ -81,8 +81,8 @@ export function CalculatorContainer() {
 
 
   return (
-    <div className="min-h-screen py-8">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen py-8" style={{ width: '100%', maxWidth: '100%', overflowX: 'hidden' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" style={{ width: '100%', maxWidth: '100%' }}>
         {/* 头部 */}
         <div className="text-center mb-8 mt-8">
           <div className="flex items-center justify-center mb-2">
@@ -95,22 +95,38 @@ export function CalculatorContainer() {
         </div>
 
         {/* 主要内容 */}
-        <div>
+        <div style={{ maxWidth: '1200px', margin: '0 auto', width: '100%' }}>
           <style>
             {`
               .calculator-layout {
                 display: grid;
                 grid-template-columns: 2fr 3fr;
                 gap: 12px;
+                width: 100%;
+                max-width: 100%;
               }
               
               @media (max-width: 599px) {
                 .calculator-layout {
                   grid-template-columns: 1fr;
                   gap: 16px;
+                  width: 100%;
+                  max-width: 100%;
+                  overflow-x: hidden;
                 }
                 .calculator-layout > div {
                   width: 100%;
+                  max-width: 100%;
+                  overflow-x: hidden;
+                  box-sizing: border-box;
+                }
+              }
+              
+              /* 确保大于768px时保持原有布局 */
+              @media (min-width: 768px) {
+                .calculator-layout {
+                  grid-template-columns: 2fr 3fr;
+                  gap: 12px;
                 }
               }
             `}
@@ -137,10 +153,7 @@ export function CalculatorContainer() {
           </div>
         </div>
 
-        {/* 底部说明 */}
-        <div className="text-center" style={{ marginTop: '0px', fontSize: '12px', opacity: 0.3 }}>
-          <p style={{ margin: 0, whiteSpace: 'nowrap', color: 'inherit' }}>计算结果仅供参考，实际投资收益可能因市场波动而有所不同，建议结合个人实际情况和专业理财建议制定投资计划</p>
-        </div>
+
       </div>
     </div>
   );
