@@ -4,7 +4,6 @@ import tsconfigPaths from "vite-tsconfig-paths";
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: '/Wealth-Shortcut/',
   build: {
     sourcemap: 'hidden',
   },
