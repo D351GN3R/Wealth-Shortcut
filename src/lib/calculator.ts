@@ -26,25 +26,31 @@ export interface CalculationResult {
   annualInvestmentNeeded: number;
 }
 
-// P值计算函数 - 自定义公式
-// 公式：P = [(1+i)^(n+1) - 1]*10
-// 其中 i 是投资收益率，n 是投资年限
+// P值计算函数 - 期初年金终值系数
+// 公式：P = [(1+i)^N - 1] / i * (1+i)
+// 其中 i 是投资收益率，N 是投资年限
 function getPValue(investmentReturnRate: number, yearsToRetirement: number): number {
   // 将百分比转换为小数
   const i = investmentReturnRate / 100;
   
-  // 特殊情况：如果投资收益率为0，则使用简化公式
+  // 特殊情况：如果投资收益率为0，则P = N（没有复利效应）
   if (i === 0) {
-    return (yearsToRetirement + 1) * 10;
+    console.log('📈 P值计算（投资收益率为0）:', {
+      investmentReturnRate: `${investmentReturnRate}%`,
+      yearsToRetirement,
+      formula: `P = N = ${yearsToRetirement}`,
+      result: yearsToRetirement
+    });
+    return yearsToRetirement;
   }
   
-  // 计算P值：P = [(1+i)^(n+1) - 1]*10
-  const pValue = (Math.pow(1 + i, yearsToRetirement + 1) - 1) * 10;
+  // 计算期初年金终值系数：P = [(1+i)^N - 1] / i * (1+i)
+  const pValue = ((Math.pow(1 + i, yearsToRetirement) - 1) / i) * (1 + i);
   
-  console.log('📈 P值计算（自定义公式）:', {
+  console.log('📈 P值计算（期初年金终值系数）:', {
     investmentReturnRate: `${investmentReturnRate}%`,
     yearsToRetirement,
-    formula: `[(1+${i})^(${yearsToRetirement}+1) - 1]*10`,
+    formula: `[(1+${i})^${yearsToRetirement} - 1] / ${i} * (1+${i})`,
     result: pValue.toFixed(2)
   });
   
