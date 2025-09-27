@@ -69,14 +69,14 @@ export function InputPanel({ params, onChange, errors, onReset, onCalculate, isC
     },
     {
       key: 'investmentReturn',
-      label: '投资收益率',
+      label: '预期投资收益率',
       value: params.investmentReturn,
       unit: '%',
       min: 0,
       max: 30,
       step: 0.1,
       placeholder: '请输入',
-      tooltip: '预期的年投资收益率，股票型基金通常在6-10%之间'
+      tooltip: '预期的年化投资收益率。参考：0%（极保守，相当于现金存放）；1-3%（银行活期、定期存款）；4-6%（债券基金、稳健型理财）；6-10%（股票基金、混合基金）；10%+（高风险投资）。建议根据个人风险承受能力选择合适的收益率预期。'
     },
     {
       key: 'expectedRetirementPassiveIncome',

@@ -91,7 +91,7 @@
 
 .ant-segmented-item {
   color: #666666 !important;
-  transition: all 0.2s ease;
+  transition: none !important;
 }
 
 [data-theme="dark"] .ant-segmented-item {
@@ -126,6 +126,52 @@ strong {
 
 [data-theme="dark"] strong {
   color: #ffffff;
+}
+
+/* 输入框样式 - 移除颜色过渡动画 */
+.ant-input-number {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+}
+
+.ant-input-number .ant-input-number-input {
+  transition: none !important;
+}
+
+/* 输入框描边样式 - 移除过渡动画 */
+.ant-input-number-wrapper {
+  transition: none !important;
+}
+
+.ant-input-number-group {
+  transition: none !important;
+}
+
+.ant-input-number-group-wrapper {
+  transition: none !important;
+}
+
+/* 输入框单位文字样式 - 移除过渡动画 */
+.ant-input-number-group-addon {
+  transition: none !important;
+  background-color: #fafafa !important;
+  border-color: #d9d9d9 !important;
+  color: #000000d9 !important;
+}
+
+[data-theme="dark"] .ant-input-number-group-addon {
+  background-color: #2a2a2a !important;
+  border-color: #434343 !important;
+  color: #ffffffd9 !important;
+}
+
+/* 按钮样式 - 移除背景色过渡动画 */
+.ant-btn {
+  transition: none !important;
+}
+
+/* 分段控制器样式 - 移除背景色过渡动画 */
+.ant-segmented {
+  transition: none !important;
 }
 
 /* 输入框聚焦动画 */

@@ -147,7 +147,7 @@ export function ResultPanel({ result }: ResultPanelProps) {
                   </Tooltip>
                 </span>
               ),
-              children: isPlaceholder ? '--' : formatNumber(displayResult.inflationFactor),
+              children: isPlaceholder ? '--' : displayResult.inflationFactor.toFixed(2),
             },
             {
               key: '3',

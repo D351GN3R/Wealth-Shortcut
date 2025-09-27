@@ -138,7 +138,7 @@ export function CalculatorContainer() {
         </div>
 
         {/* 底部说明 */}
-        <div className="text-center" style={{ marginTop: '8px', fontSize: '12px', opacity: 0.5 }}>
+        <div className="text-center" style={{ marginTop: '0px', fontSize: '12px', opacity: 0.3 }}>
           <p style={{ margin: 0, whiteSpace: 'nowrap', color: 'inherit' }}>计算结果仅供参考，实际投资收益可能因市场波动而有所不同，建议结合个人实际情况和专业理财建议制定投资计划</p>
         </div>
       </div>
