@@ -183,7 +183,7 @@ export function InputPanel({ params, onChange, errors, onReset, onCalculate, isC
         </Row>
         
         {/* 开始计算按钮 */}
-        <div style={{ marginTop: '20px' }}>
+        <div style={{ marginTop: '21px' }}>
           <Button 
             type="primary" 
             size="large" 
