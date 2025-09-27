@@ -65,27 +65,9 @@ export function CalculatorContainer() {
     setResult(null);
   }, []);
 
-  // 从本地存储加载参数
-  useEffect(() => {
-    try {
-      const savedParams = localStorage.getItem('retirement-calculator-params');
-      if (savedParams) {
-        const parsed = JSON.parse(savedParams);
-        setParams({ ...DEFAULT_PARAMS, ...parsed });
-      }
-    } catch (error) {
-      console.error('加载保存的参数失败:', error);
-    }
-  }, []);
 
-  // 保存参数到本地存储
-  useEffect(() => {
-    try {
-      localStorage.setItem('retirement-calculator-params', JSON.stringify(params));
-    } catch (error) {
-      console.error('保存参数失败:', error);
-    }
-  }, [params]);
+
+
 
   return (
     <div className="min-h-screen py-8">
