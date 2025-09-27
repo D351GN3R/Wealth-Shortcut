@@ -22,7 +22,7 @@ export function InputPanel({ params, onChange, errors, onReset, onCalculate, isC
       label: '当前年龄',
       value: params.currentAge,
       unit: '岁',
-      min: 18,
+      min: 0,
       max: 100,
       placeholder: '请输入',
       tooltip: '您目前的实际年龄，用于计算距离退休的时间'
@@ -164,7 +164,7 @@ export function InputPanel({ params, onChange, errors, onReset, onCalculate, isC
                   </span>
                 }
                 validateStatus={errors[item.key as keyof ValidationErrors] ? 'error' : ''}
-                help={errors[item.key as keyof ValidationErrors]}
+                help={errors[item.key as keyof ValidationErrors] === 'EMPTY_FIELD' ? '' : errors[item.key as keyof ValidationErrors]}
               >
                 <InputNumber
                   value={(['inflationRate', 'retirementExpenseRatio', 'withdrawalRate', 'expectedRetirementPassiveIncome'].includes(item.key) || item.value !== 0) ? item.value : undefined}

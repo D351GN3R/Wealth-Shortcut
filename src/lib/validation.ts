@@ -16,8 +16,11 @@ const VALIDATION_RULES: ValidationRule[] = [
   {
     field: 'currentAge',
     validate: (value) => {
-      if (isNaN(value) || value < 18 || value > 100) {
-        return '当前年龄必须在18-100岁之间';
+      if (isNaN(value) || value === 0) {
+        return 'EMPTY_FIELD';
+      }
+      if (value < 0 || value > 100) {
+        return '当前年龄必须在0-100岁之间';
       }
       return null;
     }
@@ -25,8 +28,8 @@ const VALIDATION_RULES: ValidationRule[] = [
   {
     field: 'retirementAge',
     validate: (value, params) => {
-      if (isNaN(value)) {
-        return '请输入有效的退休年龄';
+      if (isNaN(value) || value === 0) {
+        return 'EMPTY_FIELD';
       }
       if (value <= params.currentAge) {
         return '退休年龄必须大于当前年龄';
@@ -40,7 +43,10 @@ const VALIDATION_RULES: ValidationRule[] = [
   {
     field: 'currentAnnualExpense',
     validate: (value) => {
-      if (isNaN(value) || value < 0) {
+      if (isNaN(value) || value === 0) {
+        return 'EMPTY_FIELD';
+      }
+      if (value < 0) {
         return '年生活开支不能为负数';
       }
       return null;
@@ -49,7 +55,10 @@ const VALIDATION_RULES: ValidationRule[] = [
   {
     field: 'currentPassiveIncome',
     validate: (value) => {
-      if (isNaN(value) || value < 0) {
+      if (isNaN(value) || value === 0) {
+        return 'EMPTY_FIELD';
+      }
+      if (value < 0) {
         return '被动收入不能为负数';
       }
       return null;
@@ -67,7 +76,10 @@ const VALIDATION_RULES: ValidationRule[] = [
   {
     field: 'currentInvestmentAssets',
     validate: (value) => {
-      if (isNaN(value) || value < 0) {
+      if (isNaN(value) || value === 0) {
+        return 'EMPTY_FIELD';
+      }
+      if (value < 0) {
         return '当前投资资产不能为负数';
       }
       return null;
@@ -85,7 +97,10 @@ const VALIDATION_RULES: ValidationRule[] = [
   {
     field: 'investmentReturn',
     validate: (value) => {
-      if (isNaN(value) || value < 0 || value > 30) {
+      if (isNaN(value) || value === 0) {
+        return 'EMPTY_FIELD';
+      }
+      if (value < 0 || value > 30) {
         return '投资收益率应在0-30%之间';
       }
       return null;
