@@ -100,7 +100,7 @@
 
 .ant-segmented-item-selected {
   background-color: #eeeeee !important;
-  color: # !important;
+  color: #333333 !important;
 }
 
 [data-theme="dark"] .ant-segmented-item-selected {
