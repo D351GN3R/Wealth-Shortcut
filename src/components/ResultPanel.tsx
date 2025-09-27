@@ -108,7 +108,7 @@ export function ResultPanel({ result }: ResultPanelProps) {
           </style>
           <Descriptions
             bordered
-            column={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 2 }}
+            column={{ xs: 1, sm: 1, md: 2, lg: 2, xl: 2, xxl: 2 }}
             className="equal-width-descriptions"
             items={[
             {

@@ -109,8 +109,6 @@ export function CalculatorContainer() {
                 display: grid;
                 grid-template-columns: 2fr 3fr;
                 gap: 12px;
-                max-width: 1400px;
-                margin: 0 auto;
               }
               
               @media (max-width: 599px) {
