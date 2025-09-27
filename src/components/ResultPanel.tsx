@@ -135,7 +135,7 @@ export function ResultPanel({ result }: ResultPanelProps) {
               label: (
                 <span>
                   通胀因子
-                  <Tooltip title="考虑通胀影响的系数，用于计算未来购买力" placement="top">
+                  <Tooltip title="物价上涨倍数。比如数值为2，表示退休时的物价是现在的2倍，现在100元的东西退休时要200元" placement="top">
                     <QuestionCircleOutlined 
                       style={{ 
                         marginLeft: 6, 

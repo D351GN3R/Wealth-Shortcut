@@ -24,7 +24,7 @@ export function InputPanel({ params, onChange, errors, onReset, onCalculate, isC
       unit: '岁',
       min: 18,
       max: 100,
-      placeholder: '请输入当前年龄',
+      placeholder: '请输入',
       tooltip: '您目前的实际年龄，用于计算距离退休的时间'
     },
     {
@@ -34,7 +34,7 @@ export function InputPanel({ params, onChange, errors, onReset, onCalculate, isC
       unit: '岁',
       min: params.currentAge + 1,
       max: 100,
-      placeholder: '请输入计划退休年龄',
+      placeholder: '请输入',
       tooltip: '您希望退休的年龄，通常在55-65岁之间'
     },
     {
@@ -44,7 +44,7 @@ export function InputPanel({ params, onChange, errors, onReset, onCalculate, isC
       unit: '万元',
       min: 0,
       step: 0.1,
-      placeholder: '请输入年生活开支',
+      placeholder: '请输入',
       tooltip: '您目前每年的生活费用支出，包括衣食住行等基本开销'
     },
     {
@@ -54,18 +54,8 @@ export function InputPanel({ params, onChange, errors, onReset, onCalculate, isC
       unit: '万元/年',
       min: 0,
       step: 0.1,
-      placeholder: '请输入当前被动收入',
+      placeholder: '请输入',
       tooltip: '不需要主动工作就能获得的收入，如租金、股息、利息等'
-    },
-    {
-      key: 'expectedRetirementPassiveIncome',
-      label: '退休后预期被动收入',
-      value: params.expectedRetirementPassiveIncome,
-      unit: '万元/年',
-      min: 0,
-      step: 0.1,
-      placeholder: '请输入退休后预期被动收入',
-      tooltip: '退休后预计每年能获得的被动收入，如养老金、租金收入等'
     },
     {
       key: 'currentInvestmentAssets',
@@ -74,19 +64,8 @@ export function InputPanel({ params, onChange, errors, onReset, onCalculate, isC
       unit: '万元',
       min: 0,
       step: 0.1,
-      placeholder: '请输入当前投资资产',
+      placeholder: '请输入',
       tooltip: '您目前用于投资的资产总额，包括股票、基金、债券等'
-    },
-    {
-      key: 'inflationRate',
-      label: '通胀率',
-      value: params.inflationRate,
-      unit: '%',
-      min: 0,
-      max: 20,
-      step: 0.1,
-      placeholder: '请输入通胀率',
-      tooltip: '预期的年通胀率，通常在2-4%之间，用于计算未来购买力'
     },
     {
       key: 'investmentReturn',
@@ -96,8 +75,18 @@ export function InputPanel({ params, onChange, errors, onReset, onCalculate, isC
       min: 0,
       max: 30,
       step: 0.1,
-      placeholder: '请输入投资收益率',
+      placeholder: '请输入',
       tooltip: '预期的年投资收益率，股票型基金通常在6-10%之间'
+    },
+    {
+      key: 'expectedRetirementPassiveIncome',
+      label: '退休后预期被动收入',
+      value: params.expectedRetirementPassiveIncome,
+      unit: '万元/年',
+      min: 0,
+      step: 0.1,
+      placeholder: '请输入',
+      tooltip: '退休后预计每年能获得的被动收入，如养老金、租金收入等'
     },
     {
       key: 'retirementExpenseRatio',
@@ -107,8 +96,19 @@ export function InputPanel({ params, onChange, errors, onReset, onCalculate, isC
       min: 0,
       max: 200,
       step: 1,
-      placeholder: '请输入退休后开支比例',
+      placeholder: '请输入',
       tooltip: '退休后生活开支相对于当前开支的比例，通常在70-80%之间'
+    },
+    {
+      key: 'inflationRate',
+      label: '通胀率',
+      value: params.inflationRate,
+      unit: '%',
+      min: 0,
+      max: 20,
+      step: 0.1,
+      placeholder: '请输入',
+      tooltip: '预期的年通胀率，通常在2-4%之间，用于计算未来购买力'
     },
     {
       key: 'withdrawalRate',
@@ -118,7 +118,7 @@ export function InputPanel({ params, onChange, errors, onReset, onCalculate, isC
       min: 0,
       max: 10,
       step: 0.1,
-      placeholder: '请输入资产提取率',
+      placeholder: '请输入',
       tooltip: '退休后每年从投资资产中提取的比例，通常建议在3-4%之间'
     }
   ];
@@ -167,7 +167,7 @@ export function InputPanel({ params, onChange, errors, onReset, onCalculate, isC
                 help={errors[item.key as keyof ValidationErrors]}
               >
                 <InputNumber
-                  value={item.value}
+                  value={(['inflationRate', 'retirementExpenseRatio', 'withdrawalRate', 'expectedRetirementPassiveIncome'].includes(item.key) || item.value !== 0) ? item.value : undefined}
                   onChange={(value) => onChange(item.key as keyof CalculationParams, value || 0)}
                   placeholder={item.placeholder}
                   min={item.min}

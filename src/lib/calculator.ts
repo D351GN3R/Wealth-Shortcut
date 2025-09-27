@@ -133,14 +133,14 @@ export function calculateRetirementInvestment(params: CalculationParams): Calcul
 
 // 默认参数（注意：金额单位为"万元"）
 export const DEFAULT_PARAMS: CalculationParams = {
-  currentAge: 25,
-  retirementAge: 45,
-  currentAnnualExpense: 10,      // 10万元
-  currentPassiveIncome: 0,       // 0万元
-  expectedRetirementPassiveIncome: 4,  // 4万元
-  currentInvestmentAssets: 10,   // 10万元
+  currentAge: 0,
+  retirementAge: 0,
+  currentAnnualExpense: 0,
+  currentPassiveIncome: 0,
+  expectedRetirementPassiveIncome: 4,
+  currentInvestmentAssets: 0,
   inflationRate: 4,
-  investmentReturn: 10,
+  investmentReturn: 0,
   retirementExpenseRatio: 80,
   withdrawalRate: 4
 };
