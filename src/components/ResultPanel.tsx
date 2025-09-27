@@ -104,20 +104,22 @@ export function ResultPanel({ result, isCalculating }: ResultPanelProps) {
         <table style={{ 
           width: '100%', 
           borderCollapse: 'collapse',
-          tableLayout: 'fixed'
+          tableLayout: 'fixed',
+          borderRadius: '6px',
+          overflow: 'hidden'
         }}>
           <tbody>
             <tr>
               <th style={{ 
-                width: '25%',
-                padding: '12px 16px',
-                backgroundColor: '#fafafa',
-                border: '1px solid #f0f0f0',
-                textAlign: 'left',
-                fontSize: '14px',
-                fontWeight: 500,
-                color: 'rgba(0, 0, 0, 0.85)'
-              }}>
+                 width: '25%',
+                 padding: '24px 16px',
+                 backgroundColor: '#fafafa',
+                 border: '1px solid #f0f0f0',
+                 textAlign: 'left',
+                 fontSize: '14px',
+                 fontWeight: 500,
+                 color: 'rgba(0, 0, 0, 0.85)'
+               }}>
                 <span>
                   距离退休年数
                   <Tooltip title="从当前年龄到计划退休年龄的时间差" placement="top">
@@ -134,7 +136,7 @@ export function ResultPanel({ result, isCalculating }: ResultPanelProps) {
               </th>
               <td style={{ 
                 width: '25%',
-                padding: '12px 16px',
+                padding: '24px 16px',
                 border: '1px solid #f0f0f0',
                 fontSize: '14px',
                 color: 'rgba(0, 0, 0, 0.85)'
@@ -143,7 +145,7 @@ export function ResultPanel({ result, isCalculating }: ResultPanelProps) {
               </td>
               <th style={{ 
                 width: '25%',
-                padding: '12px 16px',
+                padding: '24px 16px',
                 backgroundColor: '#fafafa',
                 border: '1px solid #f0f0f0',
                 textAlign: 'left',
@@ -167,7 +169,7 @@ export function ResultPanel({ result, isCalculating }: ResultPanelProps) {
               </th>
               <td style={{ 
                 width: '25%',
-                padding: '12px 16px',
+                padding: '24px 16px',
                 border: '1px solid #f0f0f0',
                 fontSize: '14px',
                 color: 'rgba(0, 0, 0, 0.85)'
@@ -178,7 +180,7 @@ export function ResultPanel({ result, isCalculating }: ResultPanelProps) {
             <tr>
               <th style={{ 
                 width: '25%',
-                padding: '12px 16px',
+                padding: '24px 16px',
                 backgroundColor: '#fafafa',
                 border: '1px solid #f0f0f0',
                 textAlign: 'left',
@@ -202,7 +204,7 @@ export function ResultPanel({ result, isCalculating }: ResultPanelProps) {
               </th>
               <td style={{ 
                 width: '25%',
-                padding: '12px 16px',
+                padding: '24px 16px',
                 border: '1px solid #f0f0f0',
                 fontSize: '14px',
                 color: 'rgba(0, 0, 0, 0.85)'
@@ -211,7 +213,7 @@ export function ResultPanel({ result, isCalculating }: ResultPanelProps) {
               </td>
               <th style={{ 
                 width: '25%',
-                padding: '12px 16px',
+                padding: '24px 16px',
                 backgroundColor: '#fafafa',
                 border: '1px solid #f0f0f0',
                 textAlign: 'left',
@@ -235,7 +237,7 @@ export function ResultPanel({ result, isCalculating }: ResultPanelProps) {
               </th>
               <td style={{ 
                 width: '25%',
-                padding: '12px 16px',
+                padding: '24px 16px',
                 border: '1px solid #f0f0f0',
                 fontSize: '14px',
                 color: 'rgba(0, 0, 0, 0.85)'
@@ -246,7 +248,7 @@ export function ResultPanel({ result, isCalculating }: ResultPanelProps) {
             <tr>
               <th style={{ 
                 width: '25%',
-                padding: '12px 16px',
+                padding: '24px 16px',
                 backgroundColor: '#fafafa',
                 border: '1px solid #f0f0f0',
                 textAlign: 'left',
@@ -270,7 +272,7 @@ export function ResultPanel({ result, isCalculating }: ResultPanelProps) {
               </th>
               <td style={{ 
                 width: '25%',
-                padding: '12px 16px',
+                padding: '24px 16px',
                 border: '1px solid #f0f0f0',
                 fontSize: '14px',
                 color: 'rgba(0, 0, 0, 0.85)'
@@ -279,7 +281,7 @@ export function ResultPanel({ result, isCalculating }: ResultPanelProps) {
               </td>
               <th style={{ 
                 width: '25%',
-                padding: '12px 16px',
+                padding: '24px 16px',
                 backgroundColor: '#fafafa',
                 border: '1px solid #f0f0f0',
                 textAlign: 'left',
@@ -303,7 +305,7 @@ export function ResultPanel({ result, isCalculating }: ResultPanelProps) {
               </th>
               <td style={{ 
                 width: '25%',
-                padding: '12px 16px',
+                padding: '24px 16px',
                 border: '1px solid #f0f0f0',
                 fontSize: '14px',
                 color: 'rgba(0, 0, 0, 0.85)'
@@ -314,7 +316,7 @@ export function ResultPanel({ result, isCalculating }: ResultPanelProps) {
             <tr>
               <th style={{ 
                 width: '25%',
-                padding: '12px 16px',
+                padding: '24px 16px',
                 backgroundColor: '#fafafa',
                 border: '1px solid #f0f0f0',
                 textAlign: 'left',
@@ -338,7 +340,7 @@ export function ResultPanel({ result, isCalculating }: ResultPanelProps) {
               </th>
               <td style={{ 
                 width: '25%',
-                padding: '12px 16px',
+                padding: '24px 16px',
                 border: '1px solid #f0f0f0',
                 fontSize: '14px',
                 color: 'rgba(0, 0, 0, 0.85)'
@@ -347,7 +349,7 @@ export function ResultPanel({ result, isCalculating }: ResultPanelProps) {
               </td>
               <th style={{ 
                 width: '25%',
-                padding: '12px 16px',
+                padding: '24px 16px',
                 backgroundColor: '#fafafa',
                 border: '1px solid #f0f0f0',
                 textAlign: 'left',
@@ -371,7 +373,7 @@ export function ResultPanel({ result, isCalculating }: ResultPanelProps) {
               </th>
               <td style={{ 
                 width: '25%',
-                padding: '12px 16px',
+                padding: '24px 16px',
                 border: '1px solid #f0f0f0',
                 fontSize: '14px',
                 color: 'rgba(0, 0, 0, 0.85)'
