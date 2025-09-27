@@ -67,8 +67,8 @@
     .ant-col {
       width: 100% !important;
       max-width: 100% !important;
-      padding-left: 8px !important;
-      padding-right: 8px !important;
+      padding-left: 0 !important;
+      padding-right: 0 !important;
     }
     
     /* 输入框组件适配 */
