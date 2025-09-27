@@ -88,45 +88,65 @@ export function CalculatorContainer() {
   }, [params]);
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen py-8">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* 头部 */}
         <div className="text-center mb-8">
           <div className="flex items-center justify-center mb-2">
             <CalculatorOutlined style={{ fontSize: '32px', color: '#1890ff', marginRight: '12px' }} />
-            <h1 className="text-3xl font-bold text-gray-900">退休财务自由计算器</h1>
+            <h1 className="text-3xl font-bold" style={{ color: 'inherit' }}>退休财务自由计算器</h1>
           </div>
-          <p className="text-gray-600 max-w-2xl mx-auto">
+          <p className="max-w-2xl mx-auto" style={{ opacity: 0.7, color: 'inherit' }}>
             通过科学的计算方法，帮助您规划退休投资计划，实现财务自由目标
           </p>
         </div>
 
         {/* 主要内容 */}
-        <div style={{ display: 'grid', gridTemplateColumns: '2fr 3fr', gap: '12px' }}>
-          {/* 左侧：输入面板 */}
-          <div>
-            <InputPanel
-              params={params}
-              onChange={handleParamChange}
-              errors={errors}
-              onReset={handleReset}
-              onCalculate={handleCalculate}
-              isCalculating={isCalculating}
-            />
-          </div>
+        <div>
+          <style>
+            {`
+              .calculator-layout {
+                display: grid;
+                grid-template-columns: 2fr 3fr;
+                gap: 12px;
+              }
+              
+              @media (max-width: 599px) {
+                .calculator-layout {
+                  grid-template-columns: 1fr;
+                  gap: 16px;
+                }
+                .calculator-layout > div {
+                  width: 100%;
+                }
+              }
+            `}
+          </style>
+          <div className="calculator-layout">
+            {/* 左侧：输入面板 */}
+            <div>
+              <InputPanel
+                params={params}
+                onChange={handleParamChange}
+                errors={errors}
+                onReset={handleReset}
+                onCalculate={handleCalculate}
+                isCalculating={isCalculating}
+              />
+            </div>
 
-          {/* 右侧：结果面板 */}
-          <div style={{ display: 'flex', flexDirection: 'column', height: 'fit-content' }}>
-            <ResultPanel 
-              result={result} 
-              isCalculating={isCalculating} 
-            />
+            {/* 右侧：结果面板 */}
+            <div style={{ display: 'flex', flexDirection: 'column', height: 'fit-content' }}>
+              <ResultPanel 
+                result={result} 
+              />
+            </div>
           </div>
         </div>
 
         {/* 底部说明 */}
-        <div className="text-center" style={{ marginTop: '8px', fontSize: '12px', color: '#bfbfbf' }}>
-          <p style={{ margin: 0, whiteSpace: 'nowrap' }}>计算结果仅供参考，实际投资收益可能因市场波动而有所不同，建议结合个人实际情况和专业理财建议制定投资计划</p>
+        <div className="text-center" style={{ marginTop: '8px', fontSize: '12px', opacity: 0.5 }}>
+          <p style={{ margin: 0, whiteSpace: 'nowrap', color: 'inherit' }}>计算结果仅供参考，实际投资收益可能因市场波动而有所不同，建议结合个人实际情况和专业理财建议制定投资计划</p>
         </div>
       </div>
     </div>

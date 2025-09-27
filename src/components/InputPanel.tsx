@@ -129,14 +129,13 @@ export function InputPanel({ params, onChange, errors, onReset, onCalculate, isC
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <SettingOutlined style={{ marginRight: 8, color: '#1890ff' }} />
-            <Title level={4} style={{ margin: 0, color: '#1f2937' }}>数据设置</Title>
+            <Title level={4} style={{ margin: 0 }}>数据设置</Title>
           </div>
           <Button
             type="default"
             icon={<ReloadOutlined />}
             onClick={onReset}
             size="small"
-            style={{ color: '#6b7280' }}
           >
             重置
           </Button>
