@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎉 GitHub Pages 部署测试</h1>
+        <p>如果您能看到这个页面，说明 GitHub Pages 部署正常工作！</p>
+        <p>当前时间: <span id="time"></span></p>
+        <p>页面路径: <span id="path"></span></p>
+    </div>
+    
+    <script>
+        // 显示当前时间
+        document.getElementById('time').textContent = new Date().toLocaleString('zh-CN');
+        
+        // 显示当前路径
+        document.getElementById('path').textContent = window.location.href;
+        
+        console.log('测试页面加载成功！');
+        console.log('当前URL:', window.location.href);
+        console.log('Base URL:', document.baseURI);
+    </script>
+</body>
+</html>
