@@ -38,14 +38,8 @@ function App() {
         components: {
           Card: {
             borderRadius: 8,
-            boxShadow: 'none',
             colorBgContainer: algorithm === theme.darkAlgorithm ? '#141414' : '#ffffff',
-            borderColor: 'transparent',
             colorBorderSecondary: 'transparent',
-            colorBorder: 'transparent',
-            lineWidth: 0,
-            lineType: 'none',
-            borderWidth: 0,
           },
           Button: {
             borderRadius: 6,
