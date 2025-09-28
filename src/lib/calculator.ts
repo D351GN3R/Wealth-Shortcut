@@ -44,24 +44,11 @@ function getPValue(investmentReturnRate: number, yearsToRetirement: number): num
   
   // 特殊情况：如果投资收益率为0，则P = N（没有复利效应）
   if (i === 0) {
-    console.log('📈 P值计算（投资收益率为0）:', {
-      investmentReturnRate: `${investmentReturnRate}%`,
-      yearsToRetirement,
-      formula: `P = N = ${yearsToRetirement}`,
-      result: yearsToRetirement
-    });
     return yearsToRetirement;
   }
   
   // 计算期初年金终值系数：P = [(1+i)^N - 1] / i * (1+i)
   const pValue = ((Math.pow(1 + i, yearsToRetirement) - 1) / i) * (1 + i);
-  
-  console.log('📈 P值计算（期初年金终值系数）:', {
-    investmentReturnRate: `${investmentReturnRate}%`,
-    yearsToRetirement,
-    formula: `[(1+${i})^${yearsToRetirement} - 1] / ${i} * (1+${i})`,
-    result: pValue.toFixed(2)
-  });
   
   return pValue;
 }
@@ -77,13 +64,7 @@ function calculateInvestmentAmount(params: CalculationParams): CalculationResult
   const expectedRetirementPassiveIncomeActual = params.expectedRetirementPassiveIncome * 10000;
   const currentInvestmentAssetsActual = params.currentInvestmentAssets * 10000;
   
-  // 调试日志
-  console.log('🔍 计算参数（单位转换后）:', {
-    investmentReturn: params.investmentReturn,
-    currentInvestmentAssets: `${params.currentInvestmentAssets}万 = ${currentInvestmentAssetsActual}元`,
-    currentAnnualExpense: `${params.currentAnnualExpense}万 = ${currentAnnualExpenseActual}元`,
-    yearsToRetirement: params.retirementAge - params.currentAge
-  });
+
   
   // 1. 退休年数(N)
   const yearsToRetirement = params.retirementAge - params.currentAge;
@@ -106,23 +87,12 @@ function calculateInvestmentAmount(params: CalculationParams): CalculationResult
   // 7. 当前资产未来价值
   const currentAssetsFutureValue = currentInvestmentAssetsActual * Math.pow(1 + params.investmentReturn / 100, yearsToRetirement);
   
-  // 调试日志
-  console.log('💰 当前资产未来价值计算:', {
-    currentAssets: `${params.currentInvestmentAssets}万 = ${currentInvestmentAssetsActual}元`,
-    investmentReturn: params.investmentReturn,
-    years: yearsToRetirement,
-    formula: `${currentInvestmentAssetsActual} * (1 + ${params.investmentReturn}/100)^${yearsToRetirement}`,
-    result: `${currentAssetsFutureValue}元 = ${(currentAssetsFutureValue/10000).toFixed(2)}万`
-  });
+
   
   // 8. 资金缺口(D)
   const fundingGap = totalAssetsNeeded - currentAssetsFutureValue;
   
-  console.log('📊 计算结果:', {
-    totalAssetsNeeded: `${(totalAssetsNeeded/10000).toFixed(2)}万`,
-    currentAssetsFutureValue: `${(currentAssetsFutureValue/10000).toFixed(2)}万`,
-    fundingGap: `${(fundingGap/10000).toFixed(2)}万`
-  });
+
   
   // 9. 获取P值（年金终值系数）
   const pValue = getPValue(params.investmentReturn, yearsToRetirement);
@@ -130,10 +100,7 @@ function calculateInvestmentAmount(params: CalculationParams): CalculationResult
   // 10. 年度投资额(Y)
   const annualInvestmentNeeded = fundingGap / pValue;
   
-  console.log('🎯 最终结果:', {
-    pValue,
-    annualInvestmentNeeded: `${(annualInvestmentNeeded/10000).toFixed(2)}万/年`
-  });
+
   
   return {
     mode: CalculationMode.CALCULATE_INVESTMENT,
@@ -161,11 +128,13 @@ function calculateRetirementAge(params: CalculationParams): CalculationResult {
   
   // 使用二分查找法求解退休年数
   let minYears = 1;
-  let maxYears = 50;
-  let bestYears = minYears;
+  let maxYears = 100;
+  let bestYears = maxYears; // 初始化为最大值，避免过早收敛到最小值
   const tolerance = 0.01; // 容差
   const maxIterations = 100;
   let iterations = 0;
+  
+
   
   while (maxYears - minYears > tolerance && iterations < maxIterations) {
     const midYears = (minYears + maxYears) / 2;
@@ -179,17 +148,24 @@ function calculateRetirementAge(params: CalculationParams): CalculationResult {
     
     const result = calculateInvestmentAmount(testParams);
     
+
+    
+    // 处理负数情况：如果所需投资额为负数，说明当前资产已经足够，可以更早退休
     if (result.annualInvestmentNeeded <= targetAnnualInvestment) {
-      // 所需投资额小于等于目标，可以更早退休
+      // 所需投资额小于等于目标（包括负数情况），当前年数足够，尝试更早退休
       maxYears = midYears;
       bestYears = midYears;
+      console.log(`✅ 当前年数足够，尝试更早退休，新范围: ${minYears.toFixed(2)}-${maxYears.toFixed(2)}年`);
     } else {
-      // 所需投资额大于目标，需要延后退休
+      // 所需投资额大于目标，当前年数不够，需要延后退休
       minYears = midYears;
+      console.log(`❌ 当前年数不够，需要延后退休，新范围: ${minYears.toFixed(2)}-${maxYears.toFixed(2)}年`);
     }
     
     iterations++;
   }
+  
+
   
   const calculatedRetirementAge = params.currentAge + bestYears;
   

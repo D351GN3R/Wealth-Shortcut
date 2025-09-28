@@ -155,45 +155,7 @@
   border-bottom: 1px solid #30303080 !important;
 }
 
-/* Segmented 组件样式 */
-.ant-segmented {
-  background-color: #ffffff !important;
-  border: none !important;
-}
 
-[data-theme="dark"] .ant-segmented {
-  background-color: #2a2a2a !important;
-  border: none !important;
-}
-
-.ant-segmented-item {
-  color: #666666 !important;
-  transition: none !important;
-}
-
-[data-theme="dark"] .ant-segmented-item {
-  color: #cccccc !important;
-}
-
-.ant-segmented-item-selected {
-  background-color: #eeeeee !important;
-  color: #333333 !important;
-}
-
-[data-theme="dark"] .ant-segmented-item-selected {
-  background-color: #404040 !important;
-  color: #ffffff !important;
-}
-
-.ant-segmented-item:hover {
-  background-color: #eeeeee !important;
-  color: #333333 !important;
-}
-
-[data-theme="dark"] .ant-segmented-item:hover {
-  background-color: #353535 !important;
-  color: #ffffff !important;
-}
 
 /* Strong 标签样式 */
 strong {
@@ -205,9 +167,9 @@ strong {
   color: #ffffff;
 }
 
-/* 输入框样式 - 移除颜色过渡动画 */
+/* 输入框样式 - 快速颜色过渡动画 */
 .ant-input-number {
-  transition: border-color 0.2s ease, box-shadow 0.2s ease !important;
+  transition: border-color 0.1s ease, box-shadow 0.1s ease !important;
 }
 
 .ant-input-number .ant-input-number-input {
@@ -246,10 +208,7 @@ strong {
   transition: none !important;
 }
 
-/* 分段控制器样式 - 移除背景色过渡动画 */
-.ant-segmented {
-  transition: none !important;
-}
+
 
 /* 输入框聚焦动画 */
 @keyframes focus-ring {
@@ -277,4 +236,52 @@ strong {
 
 .animate-spin {
   animation: spin 1s linear infinite;
+}
+
+/* Segmented 组件自定义样式 - 选择性过渡效果 */
+.ant-segmented {
+  background-color: #ffffff !important;
+  padding: 3px !important;
+  transition: none !important;
+}
+
+[data-theme="dark"] .ant-segmented {
+  background-color: #1f1f1f !important;
+}
+
+.ant-segmented-item {
+  transition: none !important;
+}
+
+.ant-segmented-item-selected {
+  background-color: #ededed !important;
+  color: #000000 !important;
+  transition: none !important;
+}
+
+[data-theme="dark"] .ant-segmented-item-selected {
+  background-color: #333 !important;
+  color: #ffffff !important;
+}
+
+/* 只为滑块添加过渡动画 */
+.ant-segmented-thumb {
+  background-color: #ededed !important;
+  transition: transform 0.2s cubic-bezier(0.645, 0.045, 0.355, 1) !important;
+}
+
+[data-theme="dark"] .ant-segmented-thumb {
+  background-color: #333 !important;
+}
+
+/* 禁用其他元素的过渡，但保留滑块的transform过渡 */
+.ant-segmented-item-label {
+  transition: none !important;
+}
+
+/* 投资建议卡片响应式底部padding - 仅退休年龄模式 */
+@media (min-width: 768px) {
+  .investment-advice-card.retirement-age-mode .ant-card-body {
+    padding-bottom: 49px !important; /* 原有24px + 25px */
+  }
 }

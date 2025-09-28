@@ -184,7 +184,7 @@ export function InputPanel({ mode, params, onChange, errors, onReset, onCalculat
                 help={errors[item.key as keyof ValidationErrors] === 'EMPTY_FIELD' ? '' : errors[item.key as keyof ValidationErrors]}
               >
                 <InputNumber
-                  value={item.value === 0 || item.value === undefined ? undefined : item.value}
+                  value={item.value === undefined || isNaN(item.value) ? undefined : item.value}
                   onChange={(value) => onChange(item.key as keyof CalculationParams, value || 0)}
                   placeholder={item.placeholder}
                   min={item.min}

@@ -26,6 +26,18 @@ export function CalculatorContainer() {
     setErrors({});
   }, []);
 
+  // 稳定的Segmented选项配置
+  const segmentedOptions = useMemo(() => [
+    {
+      label: '算投资金额',
+      value: CalculationMode.CALCULATE_INVESTMENT,
+    },
+    {
+      label: '算退休年龄',
+      value: CalculationMode.CALCULATE_RETIREMENT_AGE,
+    },
+  ], []);
+
   // 参数变更处理
   const handleParamChange = useCallback((field: keyof CalculationParams, value: number) => {
     // 标记该字段为用户手动输入过
@@ -108,16 +120,7 @@ export function CalculatorContainer() {
             <Segmented
               value={mode}
               onChange={handleModeChange}
-              options={[
-                {
-                  label: '算投资金额',
-                  value: CalculationMode.CALCULATE_INVESTMENT,
-                },
-                {
-                  label: '算退休年龄',
-                  value: CalculationMode.CALCULATE_RETIREMENT_AGE,
-                },
-              ]}
+              options={segmentedOptions}
               size="large"
             />
           </div>

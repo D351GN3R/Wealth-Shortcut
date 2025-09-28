@@ -41,7 +41,11 @@ export function ResultPanel({ result, mode }: ResultPanelProps) {
           <div style={{ display: 'flex', alignItems: 'center' }}>
             <TrophyOutlined style={{ marginRight: 8, color: '#1890ff' }} />
             <Title level={4} style={{ margin: 0 }}>计算结果</Title>
-            <Tooltip title="计算结果仅供参考，实际投资收益可能因市场波动而有所不同，建议结合个人实际情况和专业理财建议制定投资计划。" placement="top">
+            <Tooltip title={
+              mode === CalculationMode.CALCULATE_RETIREMENT_AGE 
+                ? "计算结果仅供参考。注意：系统设定最大退休年龄为100岁，如果计算结果达到此限制，说明当前投资金额不足以在合理年龄内实现财务自由，建议增加每月投资金额。"
+                : "计算结果仅供参考，实际投资收益可能因市场波动而有所不同，建议结合个人实际情况和专业理财建议制定投资计划。"
+            } placement="top">
               <QuestionCircleOutlined 
                 style={{ 
                   marginLeft: 6, 
@@ -91,7 +95,21 @@ export function ResultPanel({ result, mode }: ResultPanelProps) {
               </Col>
               <Col xs={24} md={12}>
                 <Statistic
-                  title="距离退休年数"
+                  title={
+                    <span>
+                      距离退休年数
+                      <Tooltip title="从当前年龄到退休年龄的时间差（退休年龄 - 当前年龄）。注意：系统设定最大退休年龄为100岁，如果计算结果达到此限制，说明当前投资金额不足以在合理年龄内实现财务自由，建议增加每月投资金额。" placement="top">
+                        <QuestionCircleOutlined 
+                          style={{ 
+                            marginLeft: 6, 
+                            color: '#8c8c8c', 
+                            fontSize: '12px',
+                            cursor: 'help'
+                          }} 
+                        />
+                      </Tooltip>
+                    </span>
+                  }
                   value={isPlaceholder ? '--' : displayResult.yearsToRetirement.toFixed(1)}
                   suffix={isPlaceholder ? '' : '年'}
                   valueStyle={{ fontSize: '28px', fontWeight: 'bold' }}
@@ -141,7 +159,7 @@ export function ResultPanel({ result, mode }: ResultPanelProps) {
               label: (
                 <span>
                   距离退休年数
-                  <Tooltip title="从当前年龄到计划退休年龄的时间差" placement="top">
+                  <Tooltip title="从当前年龄到退休年龄的时间差（退休年龄 - 当前年龄）。注意：系统设定最大退休年龄为100岁，如果计算结果达到此限制，说明当前投资金额不足以在合理年龄内实现财务自由，建议增加每月投资金额。" placement="top">
                     <QuestionCircleOutlined 
                       style={{ 
                         marginLeft: 6, 
@@ -294,7 +312,7 @@ export function ResultPanel({ result, mode }: ResultPanelProps) {
       </Card>
 
       {/* 投资建议 */}
-      <Card style={{ height: 'fit-content' }}>
+      <Card className={`investment-advice-card ${mode === CalculationMode.CALCULATE_RETIREMENT_AGE ? 'retirement-age-mode' : ''}`} style={{ height: 'fit-content' }}>
         <Text style={{ fontSize: '16px', lineHeight: '1.6' }}>
           <Text strong style={{ fontSize: '16px' }}>投资建议：</Text>
           {mode === CalculationMode.CALCULATE_INVESTMENT ? (
