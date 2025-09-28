@@ -1,20 +1,30 @@
 import React, { useState, useCallback, useMemo, useEffect } from 'react';
-import { CalculationParams, CalculationResult, DEFAULT_PARAMS, calculateRetirementInvestment } from '../lib/calculator';
+import { CalculationParams, CalculationResult, DEFAULT_PARAMS, calculateRetirementInvestment, CalculationMode, calculate } from '../lib/calculator';
 import { ValidationErrors, validateField, validateAllFields, hasValidationErrors } from '../lib/validation';
 import { InputPanel } from './InputPanel';
 import { ResultPanel } from './ResultPanel';
 import { CalculatorOutlined } from '@ant-design/icons';
+import { Segmented } from 'antd';
 
 
 
 export function CalculatorContainer() {
   // 状态管理
+  const [mode, setMode] = useState<CalculationMode>(CalculationMode.CALCULATE_INVESTMENT);
   const [params, setParams] = useState<CalculationParams>(DEFAULT_PARAMS);
   const [errors, setErrors] = useState<ValidationErrors>({});
   const [result, setResult] = useState<CalculationResult | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
   // 跟踪用户手动输入过的字段
   const [userInputFields, setUserInputFields] = useState<Set<keyof CalculationParams>>(new Set());
+
+  // 模式切换处理
+  const handleModeChange = useCallback((newMode: CalculationMode) => {
+    setMode(newMode);
+    // 切换模式时清空结果和错误
+    setResult(null);
+    setErrors({});
+  }, []);
 
   // 参数变更处理
   const handleParamChange = useCallback((field: keyof CalculationParams, value: number) => {
@@ -25,7 +35,7 @@ export function CalculatorContainer() {
       const newParams = { ...prev, [field]: value };
       
       // 实时验证当前字段，传入用户输入状态（该字段现在被认为是用户输入过的）
-      const fieldError = validateField(field, value, newParams, true);
+      const fieldError = validateField(field, value, newParams, true, mode);
       setErrors(prevErrors => ({
         ...prevErrors,
         [field]: fieldError
@@ -45,7 +55,7 @@ export function CalculatorContainer() {
       Object.keys(params).forEach(key => {
         const field = key as keyof CalculationParams;
         const hasUserInput = userInputFields.has(field) || params[field] !== 0;
-        allErrors[field] = validateField(field, params[field], params, hasUserInput);
+        allErrors[field] = validateField(field, params[field], params, hasUserInput, mode);
       });
       setErrors(allErrors);
       
@@ -58,7 +68,7 @@ export function CalculatorContainer() {
       // 模拟异步计算（实际计算很快，但为了用户体验添加短暂延迟）
       await new Promise(resolve => setTimeout(resolve, 100));
       
-      const calculationResult = calculateRetirementInvestment(params);
+      const calculationResult = calculate(params, mode);
       setResult(calculationResult);
     } catch (error) {
       console.error('计算错误:', error);
@@ -89,9 +99,28 @@ export function CalculatorContainer() {
             <CalculatorOutlined style={{ fontSize: '32px', color: '#1890ff', marginRight: '12px' }} />
             <h1 className="text-3xl font-bold" style={{ color: 'inherit' }}>退休财务自由计算器</h1>
           </div>
-          <p className="max-w-2xl mx-auto" style={{ opacity: 0.7, color: 'inherit' }}>
+          <p className="max-w-2xl mx-auto mb-6" style={{ opacity: 0.7, color: 'inherit' }}>
             通过科学的计算方法，帮助您规划退休投资计划，实现财务自由目标
           </p>
+          
+          {/* 模式切换器 */}
+          <div className="flex justify-center mb-4">
+            <Segmented
+              value={mode}
+              onChange={handleModeChange}
+              options={[
+                {
+                  label: '算投资金额',
+                  value: CalculationMode.CALCULATE_INVESTMENT,
+                },
+                {
+                  label: '算退休年龄',
+                  value: CalculationMode.CALCULATE_RETIREMENT_AGE,
+                },
+              ]}
+              size="large"
+            />
+          </div>
         </div>
 
         {/* 主要内容 */}
@@ -135,6 +164,7 @@ export function CalculatorContainer() {
             {/* 左侧：输入面板 */}
             <div>
               <InputPanel
+                mode={mode}
                 params={params}
                 onChange={handleParamChange}
                 errors={errors}
@@ -147,7 +177,8 @@ export function CalculatorContainer() {
             {/* 右侧：结果面板 */}
             <div style={{ display: 'flex', flexDirection: 'column', height: 'fit-content' }}>
               <ResultPanel 
-                result={result} 
+                result={result}
+                mode={mode}
               />
             </div>
           </div>

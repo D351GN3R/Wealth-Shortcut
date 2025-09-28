@@ -1,12 +1,13 @@
 import React from 'react';
 import { Card, Form, InputNumber, Button, Row, Col, Typography, Tooltip } from 'antd';
 import { ReloadOutlined, SettingOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { CalculationParams } from '../lib/calculator';
+import { CalculationParams, CalculationMode } from '../lib/calculator';
 import { ValidationErrors } from '../lib/validation';
 
 const { Title } = Typography;
 
 interface InputPanelProps {
+  mode: CalculationMode;
   params: CalculationParams;
   onChange: (field: keyof CalculationParams, value: number) => void;
   errors: ValidationErrors;
@@ -15,8 +16,10 @@ interface InputPanelProps {
   isCalculating: boolean;
 }
 
-export function InputPanel({ params, onChange, errors, onReset, onCalculate, isCalculating }: InputPanelProps) {
+export function InputPanel({ mode, params, onChange, errors, onReset, onCalculate, isCalculating }: InputPanelProps) {
+  // 构建表单字段数组
   const formItems = [
+    // 第一位：当前年龄
     {
       key: 'currentAge',
       label: '当前年龄',
@@ -27,22 +30,33 @@ export function InputPanel({ params, onChange, errors, onReset, onCalculate, isC
       placeholder: '请输入',
       tooltip: '您目前的实际年龄，用于计算距离退休的时间'
     },
-    {
-      key: 'retirementAge',
-      label: '计划退休年龄',
-      value: params.retirementAge,
-      unit: '岁',
-      min: params.currentAge + 1,
-      max: 100,
-      placeholder: '请输入',
-      tooltip: '您希望退休的年龄，通常在55-65岁之间'
-    },
+    // 第二位：根据模式显示不同字段
+    ...(mode === CalculationMode.CALCULATE_INVESTMENT 
+      ? [
+          {
+            key: 'retirementAge',
+            label: '计划退休年龄',
+            value: params.retirementAge || undefined,
+            unit: '岁',
+            min: params.currentAge + 1,
+            max: 100,
+            step: 1,
+            placeholder: '请输入',
+            tooltip: '您希望退休的年龄，通常在55-65岁之间'
+          }
+        ]
+      : [
+          {            key: 'monthlyInvestment',            label: '每月可投资金额',            value: params.monthlyInvestment || undefined,            unit: '元',            min: 0,            max: 1000000,            step: 100,            placeholder: '请输入',            tooltip: '您每月可用于投资的金额，用于计算能在多少年后退休'          }
+        ]
+    ),
+    // 其余字段保持原有顺序
     {
       key: 'currentAnnualExpense',
       label: '当前年生活开支',
       value: params.currentAnnualExpense,
       unit: '万元',
       min: 0,
+      max: 1000,
       step: 0.1,
       placeholder: '请输入',
       tooltip: '您目前每年的生活费用支出，包括衣食住行等基本开销'
@@ -53,6 +67,7 @@ export function InputPanel({ params, onChange, errors, onReset, onCalculate, isC
       value: params.currentPassiveIncome,
       unit: '万元/年',
       min: 0,
+      max: 1000,
       step: 0.1,
       placeholder: '请输入',
       tooltip: '不需要主动工作就能获得的收入，如租金、股息、利息等'
@@ -63,6 +78,7 @@ export function InputPanel({ params, onChange, errors, onReset, onCalculate, isC
       value: params.currentInvestmentAssets,
       unit: '万元',
       min: 0,
+      max: 10000,
       step: 0.1,
       placeholder: '请输入',
       tooltip: '您目前用于投资的资产总额，包括股票、基金、债券等'
@@ -84,6 +100,7 @@ export function InputPanel({ params, onChange, errors, onReset, onCalculate, isC
       value: params.expectedRetirementPassiveIncome,
       unit: '万元/年',
       min: 0,
+      max: 1000,
       step: 0.1,
       placeholder: '请输入',
       tooltip: '退休后预计每年能获得的被动收入，如养老金、租金收入等'
@@ -167,7 +184,7 @@ export function InputPanel({ params, onChange, errors, onReset, onCalculate, isC
                 help={errors[item.key as keyof ValidationErrors] === 'EMPTY_FIELD' ? '' : errors[item.key as keyof ValidationErrors]}
               >
                 <InputNumber
-                  value={isNaN(item.value) ? undefined : item.value}
+                  value={item.value === 0 || item.value === undefined ? undefined : item.value}
                   onChange={(value) => onChange(item.key as keyof CalculationParams, value || 0)}
                   placeholder={item.placeholder}
                   min={item.min}

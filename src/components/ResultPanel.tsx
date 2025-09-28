@@ -1,17 +1,19 @@
 import React from 'react';
 import { Card, Statistic, Descriptions, Row, Col, Typography, Tooltip } from 'antd';
 import { DollarOutlined, TrophyOutlined, LineChartOutlined, CalendarOutlined, ClockCircleOutlined, AimOutlined, RiseOutlined, FileTextOutlined, QuestionCircleOutlined } from '@ant-design/icons';
-import { CalculationResult } from '../lib/calculator';
+import { CalculationResult, CalculationMode } from '../lib/calculator';
 import { formatCurrency, formatPercentage, formatNumber } from '../lib/calculator';
 
 const { Title, Text } = Typography;
 
 interface ResultPanelProps {
   result: CalculationResult | null;
+  mode: CalculationMode;
 }
 
 // 占位数据
 const placeholderResult: CalculationResult = {
+  mode: CalculationMode.CALCULATE_INVESTMENT,
   annualInvestmentNeeded: 0,
   yearsToRetirement: 0,
   inflationFactor: 0,
@@ -24,7 +26,7 @@ const placeholderResult: CalculationResult = {
   retirementPassiveIncome: 0
 };
 
-export function ResultPanel({ result }: ResultPanelProps) {
+export function ResultPanel({ result, mode }: ResultPanelProps) {
   // 使用实际结果或占位数据
   const displayResult = result || placeholderResult;
   const isPlaceholder = !result;
@@ -54,26 +56,49 @@ export function ResultPanel({ result }: ResultPanelProps) {
         style={{ height: 'fit-content' }}
       >
         <Row gutter={[24, 24]}>
-          <Col xs={24} md={12}>
-            <Statistic
-              title="每年需要投资金额"
-              value={isPlaceholder ? '¥--' : displayResult.annualInvestmentNeeded}
-              precision={isPlaceholder ? 0 : 2}
-              prefix={isPlaceholder ? '' : '¥'}
-              suffix={isPlaceholder ? '' : '元'}
-              valueStyle={{ fontSize: '28px', fontWeight: 'bold' }}
-            />
-          </Col>
-          <Col xs={24} md={12}>
-            <Statistic
-              title="每月需要投资金额"
-              value={isPlaceholder ? '¥--' : monthlyInvestment}
-              precision={isPlaceholder ? 0 : 2}
-              prefix={isPlaceholder ? '' : '¥'}
-              suffix={isPlaceholder ? '' : '元'}
-              valueStyle={{ fontSize: '28px', fontWeight: 'bold' }}
-            />
-          </Col>
+          {mode === CalculationMode.CALCULATE_INVESTMENT ? (
+            <>
+              <Col xs={24} md={12}>
+                <Statistic
+                  title="每年需要投资金额"
+                  value={isPlaceholder ? '¥--' : displayResult.annualInvestmentNeeded}
+                  precision={isPlaceholder ? 0 : 2}
+                  prefix={isPlaceholder ? '' : '¥'}
+                  suffix={isPlaceholder ? '' : '元'}
+                  valueStyle={{ fontSize: '28px', fontWeight: 'bold' }}
+                />
+              </Col>
+              <Col xs={24} md={12}>
+                <Statistic
+                  title="每月需要投资金额"
+                  value={isPlaceholder ? '¥--' : monthlyInvestment}
+                  precision={isPlaceholder ? 0 : 2}
+                  prefix={isPlaceholder ? '' : '¥'}
+                  suffix={isPlaceholder ? '' : '元'}
+                  valueStyle={{ fontSize: '28px', fontWeight: 'bold' }}
+                />
+              </Col>
+            </>
+          ) : (
+            <>
+              <Col xs={24} md={12}>
+                <Statistic
+                  title="建议退休年龄"
+                  value={isPlaceholder ? '--' : displayResult.calculatedRetirementAge || '--'}
+                  suffix={isPlaceholder ? '' : '岁'}
+                  valueStyle={{ fontSize: '28px', fontWeight: 'bold' }}
+                />
+              </Col>
+              <Col xs={24} md={12}>
+                <Statistic
+                  title="距离退休年数"
+                  value={isPlaceholder ? '--' : displayResult.yearsToRetirement.toFixed(1)}
+                  suffix={isPlaceholder ? '' : '年'}
+                  valueStyle={{ fontSize: '28px', fontWeight: 'bold' }}
+                />
+              </Col>
+            </>
+          )}
         </Row>
       </Card>
 
@@ -128,7 +153,7 @@ export function ResultPanel({ result }: ResultPanelProps) {
                   </Tooltip>
                 </span>
               ),
-              children: isPlaceholder ? '--' : `${formatNumber(displayResult.yearsToRetirement)} 年`,
+              children: isPlaceholder ? '--' : `${displayResult.yearsToRetirement.toFixed(1)} 年`,
             },
             {
               key: '2',
@@ -272,7 +297,11 @@ export function ResultPanel({ result }: ResultPanelProps) {
       <Card style={{ height: 'fit-content' }}>
         <Text style={{ fontSize: '16px', lineHeight: '1.6' }}>
           <Text strong style={{ fontSize: '16px' }}>投资建议：</Text>
-          根据您的财务状况和退休规划，建议您每年投资 <Text strong style={{ fontSize: '16px', opacity: isPlaceholder ? 0.3 : 1 }}>{formatCurrency(displayResult.annualInvestmentNeeded)}</Text>（即每月 <Text strong style={{ fontSize: '16px', opacity: isPlaceholder ? 0.3 : 1 }}>{formatCurrency(monthlyInvestment)}</Text>），坚持 <Text strong style={{ fontSize: '16px', opacity: isPlaceholder ? 0.3 : 1 }}>{formatNumber(displayResult.yearsToRetirement)}</Text> 年的投资计划。通过持续投资，您的当前资产将增长至 <Text strong style={{ fontSize: '16px', opacity: isPlaceholder ? 0.3 : 1 }}>{formatCurrency(displayResult.currentAssetsFutureValue)}</Text>，加上新增投资，退休时预计总资产将达到 <Text strong style={{ fontSize: '16px', opacity: isPlaceholder ? 0.3 : 1 }}>{formatCurrency(displayResult.totalAssetsNeeded)}</Text>，足以支撑您的退休生活。
+          {mode === CalculationMode.CALCULATE_INVESTMENT ? (
+            <>根据您的财务状况和退休规划，建议您每年投资 <Text strong style={{ fontSize: '16px', opacity: isPlaceholder ? 0.3 : 1 }}>{formatCurrency(displayResult.annualInvestmentNeeded)}</Text>（即每月 <Text strong style={{ fontSize: '16px', opacity: isPlaceholder ? 0.3 : 1 }}>{formatCurrency(monthlyInvestment)}</Text>），坚持 <Text strong style={{ fontSize: '16px', opacity: isPlaceholder ? 0.3 : 1 }}>{formatNumber(displayResult.yearsToRetirement)}</Text> 年的投资计划。通过持续投资，您的当前资产将增长至 <Text strong style={{ fontSize: '16px', opacity: isPlaceholder ? 0.3 : 1 }}>{formatCurrency(displayResult.currentAssetsFutureValue)}</Text>，加上新增投资，退休时预计总资产将达到 <Text strong style={{ fontSize: '16px', opacity: isPlaceholder ? 0.3 : 1 }}>{formatCurrency(displayResult.totalAssetsNeeded)}</Text>，足以支撑您的退休生活。</>
+          ) : (
+            <>根据您当前的投资计划（每月投资 <Text strong style={{ fontSize: '16px', opacity: isPlaceholder ? 0.3 : 1 }}>{formatCurrency(monthlyInvestment)}</Text>），建议您在 <Text strong style={{ fontSize: '16px', opacity: isPlaceholder ? 0.3 : 1 }}>{displayResult.calculatedRetirementAge || '--'}</Text> 岁时退休。届时您将拥有 <Text strong style={{ fontSize: '16px', opacity: isPlaceholder ? 0.3 : 1 }}>{formatCurrency(displayResult.totalAssetsNeeded)}</Text> 的总资产，足以支撑您的退休生活需求。</>
+          )}
         </Text>
       </Card>
     </div>

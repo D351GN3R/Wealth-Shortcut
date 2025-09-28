@@ -1,4 +1,4 @@
-import { CalculationParams } from './calculator';
+import { CalculationParams, CalculationMode } from './calculator';
 
 // 验证错误类型
 export interface ValidationErrors {
@@ -8,7 +8,7 @@ export interface ValidationErrors {
 // 验证规则接口
 interface ValidationRule {
   field: keyof CalculationParams;
-  validate: (value: number, params: CalculationParams, hasUserInput?: boolean) => string | null;
+  validate: (value: number, params: CalculationParams, hasUserInput?: boolean, mode?: CalculationMode) => string | null;
 }
 
 // 验证规则定义
@@ -27,7 +27,12 @@ const VALIDATION_RULES: ValidationRule[] = [
   },
   {
     field: 'retirementAge',
-    validate: (value, params) => {
+    validate: (value, params, hasUserInput, mode) => {
+      // 在算退休年龄模式下，该字段是可选的
+      if (mode === CalculationMode.CALCULATE_RETIREMENT_AGE) {
+        return null;
+      }
+      
       if (isNaN(value) || value === 0) {
         return 'EMPTY_FIELD';
       }
@@ -123,6 +128,23 @@ const VALIDATION_RULES: ValidationRule[] = [
       }
       return null;
     }
+  },
+  {
+    field: 'monthlyInvestment',
+    validate: (value, params, hasUserInput, mode) => {
+      // 在算投资金额模式下，该字段是可选的
+      if (mode === CalculationMode.CALCULATE_INVESTMENT) {
+        return null;
+      }
+      
+      if (isNaN(value) || (value === 0 && !hasUserInput)) {
+        return 'EMPTY_FIELD';
+      }
+      if (value < 0) {
+        return '每月投资金额不能为负数';
+      }
+      return null;
+    }
   }
 ];
 
@@ -131,20 +153,21 @@ export function validateField(
   field: keyof CalculationParams,
   value: number,
   params: CalculationParams,
-  hasUserInput?: boolean
+  hasUserInput?: boolean,
+  mode?: CalculationMode
 ): string | null {
   const rule = VALIDATION_RULES.find(r => r.field === field);
   if (!rule) return null;
   
-  return rule.validate(value, params, hasUserInput);
+  return rule.validate(value, params, hasUserInput, mode);
 }
 
 // 验证所有字段
-export function validateAllFields(params: CalculationParams): ValidationErrors {
+export function validateAllFields(params: CalculationParams, mode?: CalculationMode): ValidationErrors {
   const errors: ValidationErrors = {};
   
   VALIDATION_RULES.forEach(rule => {
-    const error = rule.validate(params[rule.field], params);
+    const error = rule.validate(params[rule.field], params, true, mode);
     errors[rule.field] = error;
   });
   

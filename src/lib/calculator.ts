@@ -1,7 +1,14 @@
+// 计算模式枚举
+export enum CalculationMode {
+  CALCULATE_INVESTMENT = 'calculate_investment',
+  CALCULATE_RETIREMENT_AGE = 'calculate_retirement_age'
+}
+
 // 计算参数接口
 export interface CalculationParams {
   currentAge: number;
-  retirementAge: number;
+  retirementAge?: number; // 算投资金额模式必填
+  monthlyInvestment?: number; // 算退休年龄模式必填
   currentAnnualExpense: number;
   currentPassiveIncome: number;
   expectedRetirementPassiveIncome: number;
@@ -14,7 +21,9 @@ export interface CalculationParams {
 
 // 计算结果接口
 export interface CalculationResult {
+  mode: CalculationMode;
   yearsToRetirement: number;
+  calculatedRetirementAge?: number; // 算退休年龄模式结果
   inflationFactor: number;
   retirementAnnualExpense: number;
   retirementPassiveIncome: number;
@@ -57,8 +66,11 @@ function getPValue(investmentReturnRate: number, yearsToRetirement: number): num
   return pValue;
 }
 
-// 主计算函数
-export function calculateRetirementInvestment(params: CalculationParams): CalculationResult {
+// 正向计算函数（算投资金额模式）
+function calculateInvestmentAmount(params: CalculationParams): CalculationResult {
+  if (!params.retirementAge) {
+    throw new Error('退休年龄是必填项');
+  }
   // 单位转换：将"万元"转换为实际数值
   const currentAnnualExpenseActual = params.currentAnnualExpense * 10000;
   const currentPassiveIncomeActual = params.currentPassiveIncome * 10000;
@@ -124,6 +136,7 @@ export function calculateRetirementInvestment(params: CalculationParams): Calcul
   });
   
   return {
+    mode: CalculationMode.CALCULATE_INVESTMENT,
     yearsToRetirement,
     inflationFactor,
     retirementAnnualExpense,
@@ -135,6 +148,81 @@ export function calculateRetirementInvestment(params: CalculationParams): Calcul
     pValue,
     annualInvestmentNeeded
   };
+}
+
+// 反向计算函数（算退休年龄模式）
+function calculateRetirementAge(params: CalculationParams): CalculationResult {
+  if (!params.monthlyInvestment) {
+    throw new Error('每月投资金额是必填项');
+  }
+  
+  // 单位转换：monthlyInvestment现在是"元"单位，直接计算年投资额
+  const targetAnnualInvestment = params.monthlyInvestment * 12;
+  
+  // 使用二分查找法求解退休年数
+  let minYears = 1;
+  let maxYears = 50;
+  let bestYears = minYears;
+  const tolerance = 0.01; // 容差
+  const maxIterations = 100;
+  let iterations = 0;
+  
+  while (maxYears - minYears > tolerance && iterations < maxIterations) {
+    const midYears = (minYears + maxYears) / 2;
+    const testRetirementAge = params.currentAge + midYears;
+    
+    // 使用当前年数计算所需投资额
+    const testParams = {
+      ...params,
+      retirementAge: testRetirementAge
+    };
+    
+    const result = calculateInvestmentAmount(testParams);
+    
+    if (result.annualInvestmentNeeded <= targetAnnualInvestment) {
+      // 所需投资额小于等于目标，可以更早退休
+      maxYears = midYears;
+      bestYears = midYears;
+    } else {
+      // 所需投资额大于目标，需要延后退休
+      minYears = midYears;
+    }
+    
+    iterations++;
+  }
+  
+  const calculatedRetirementAge = params.currentAge + bestYears;
+  
+  // 使用最终结果重新计算完整数据
+  const finalParams = {
+    ...params,
+    retirementAge: calculatedRetirementAge
+  };
+  
+  const finalResult = calculateInvestmentAmount(finalParams);
+  
+  return {
+    ...finalResult,
+    mode: CalculationMode.CALCULATE_RETIREMENT_AGE,
+    calculatedRetirementAge: Math.round(calculatedRetirementAge)
+  };
+}
+
+// 统一计算入口函数
+export function calculate(params: CalculationParams, mode: CalculationMode): CalculationResult {
+  switch (mode) {
+    case CalculationMode.CALCULATE_INVESTMENT:
+      return calculateInvestmentAmount(params);
+    case CalculationMode.CALCULATE_RETIREMENT_AGE:
+      return calculateRetirementAge(params);
+    default:
+      throw new Error('未知的计算模式');
+  }
+}
+
+// 向后兼容的主计算函数
+export function calculateRetirementInvestment(params: CalculationParams): CalculationResult {
+  return calculateInvestmentAmount(params);
 }
 
 // 默认参数（注意：金额单位为"万元"）
